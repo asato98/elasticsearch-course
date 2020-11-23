@@ -1,4 +1,4 @@
-# Helm Course Labs
+# Elasticsearch Course Labs
 [Lab01](Labs/Lab01.md)
 
 [Lab02](Labs/Lab02.md)
