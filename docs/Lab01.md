@@ -1,47 +1,187 @@
-# Lab 01: Installing Helm with downloaded script
+# Lab 01: Deploy a Multi-Node Elasticsearch Cluster
 
-Download the script and run it locally
-This script will download the latest version of helm binary and move it in the bin directory
+### 1. Install Elasticsearch on each node.
 
+Using the Secure Shell (SSH), log in to each node as cloud_user via the public IP address.
 
+Become the root user with:
 ```
- root@Master:~# curl https://raw.githubusercontent.com/helm/helm/master/scripts/get-helm-3 > get_helm.sh
+sudo su -
 ```
- output
+Import the Elastic GPG key:
 ```
-% Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
-                                 Dload  Upload   Total   Spent    Left  Speed
-100  6617  100  6617    0     0  15347      0 --:--:-- --:--:-- --:--:-- 15352
+rpm --import https://artifacts.elastic.co/GPG-KEY-elasticsearch
+```
+Download the Elasticsearch 7.6 RPM:
+```
+curl -O https://artifacts.elastic.co/downloads/elasticsearch/elasticsearch-7.6.0-x86_64.rpm
+```
+Install Elasticsearch:
+```
+rpm --install elasticsearch-7.6.0-x86_64.rpm
+```
+Configure Elasticsearch to start on system boot:
+```
+systemctl enable elasticsearch
+```
+### 2. Configure each node's elasticsearch.yml per instructions.
+
+Log in to each node and become the root user:
+```
+sudo su -
+```
+Open the elasticsearch.yml file:
+```
+vim /etc/elasticsearch/elasticsearch.yml
+```
+Change the following line:
+```
+#cluster.name: my-application
+```
+to
+```
+cluster.name: cluster-1
+```
+Change the following line on master-1:
+```
+#node.name: node-1
+```
+to
+```
+node.name: master-1
+```
+Change the following line on data-1:
+```
+#node.name: node-1
+```
+to
+```
+node.name: data-1
+```
+Change the following line on data-2:
+```
+#node.name: node-1
+```
+to
+```
+node.name: data-2
+```
+Change the following line on data-1:
+```
+#node.attr.rack: r1
+```
+to
+```
+node.attr.temp: hot
+```
+Change the following line on data-2:
+```
+#node.attr.rack: r1
+```
+to
+```
+node.attr.temp: warm
+```
+Add the following lines on master-1:
+```
+node.master: true
+node.data: false
+node.ingest: false
+node.ml: false
+```
+Add the following lines on data-1:
+```
+node.master: false
+node.data: true
+node.ingest: true
+node.ml: false
+```
+Add the following lines on data-2:
+```
+node.master: false
+node.data: true
+node.ingest: true
+node.ml: false
+```
+Change the following on each node:
+```
+#network.host: 192.168.0.1
+```
+to
+```
+network.host: [_local_, _site_]
+```
+Change the following on each node:
+```
+#discovery.seed_hosts: ["host1", "host2"]
+```
+to
+```
+discovery.seed_hosts: ["10.0.1.101"]
+```
+Change the following on each node:
+```
+#cluster.initial_master_nodes: ["node-1", "node-2"]
+```
+to
+```
+cluster.initial_master_nodes: ["master-1"]
+```
+### 3. Configure the heap for each node per instructions.
+
+Log in to the master node and become the root user:
+```
+sudo su -
+```
+Open the jvm.options file:
+```
+vim /etc/elasticsearch/jvm.options
+```
+Change the following lines:
+```
+-Xms1g
+-Xmx1g
+```
+to
+```
+-Xms768m
+-Xmx768m
+```
+Log in to each data node and become the root user:
+```
+sudo su -
+```
+Open the jvm.options file:
+```
+vim /etc/elasticsearch/jvm.options
+```
+Change the following lines:
+```
+-Xms1g
+-Xmx1g
+```
+to
+```
+-Xms2g
+-Xmx2g
 ```
 
-Set permissions
+### 4. Start Elasticsearch on each node.
+
+Log in to each node and become the root user:
 ```
-root@Master:~# chmod 700 get_helm.sh
+sudo su -
 ```
-Run Script
+Start Elasticsearch:
 ```
-root@Master:~# ./get_helm.sh
+systemctl start elasticsearch
 ```
-output
+Check the startup process:
 ```
-Downloading https://get.helm.sh/helm-v3.0.0-linux-amd64.tar.gz
-Preparing to install helm into /usr/local/bin
-helm installed into /usr/local/bin/helm
+less /var/log/elasticsearch/cluster-1.log
+```
+Check the node configuration:
+```
+curl localhost:9200/_cat/nodes?v
 ```
 
-Test installation
-```
-root@Master:~# helm info
-```
-```
-The Kubernetes package manager
-
-Common actions for Helm:
-
-- helm search:    search for charts
-- helm pull:      download a chart to your local directory to view
-- helm install:   upload the chart to Kubernetes
-- helm list:      list releases of charts
-<output_omitted>
-```
-You are now ready to start using Helm.

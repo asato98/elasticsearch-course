@@ -1,60 +1,52 @@
-# Lab03: Charts in depth
+# Lab03: Encrypt the Elasticsearch Transport Network
 
-Fetch the wordpress Chart in local directory
-```
-:~$ helm fetch bitnami/wordpress
-```
-```
-:~$ls
-wordpress-8.0.1.tgz
-```
+### 1. Configure transport network encryption.
 
-now fetch with decompression 
-```
-:~$ helm fetch --untar bitnami/wordpress
-:~$ ls
-wordpress  wordpress-8.0.1.tgz
-:~$ rm -f wordpress-8.0.1.tgz
-```
-list the dependencies of the chart
-```
-:~$ helm dep list ./wordpress
-```
-it will print the mariadb dep.
+Using the Secure Shell (SSH), log in to each node as cloud_user via the public IP address.
 
-inspect the chart directory of wordpress and delete the dependencies resources
+Become the root user with:
 ```
-:~$ ls ./wordpress
-:~$ ls ./wordpress/charts
-:~$ rm -rf ./wordpress/charts/mariadb
+sudo su -
 ```
-try install the chart locally
+Add the following to /etc/elasticsearch/elasticsearch.yml on each node:
 ```
-:~$ helm install training-wp-dep ./wordpress
-Error: found in Chart.yaml, but missing in charts/ directory: mariadb
+# --------------------------------- Security -----------------------------------
+#
+xpack.security.enabled: true
+xpack.security.transport.ssl.enabled: true
+xpack.security.transport.ssl.verification_mode: certificate
+xpack.security.transport.ssl.keystore.path: certificate.p12
+xpack.security.transport.ssl.truststore.path: certificate.p12
+```
+### 2. Restart Elasticsearch.
 
+Start Elasticsearch with:
 ```
+systemctl start elasticsearch
+```
+### 3. Set the password for each built-in user.
 
-now resolv the dependencies
+Set the built-in user passwords using the elasticsearch-setup-passwords utility on the master-1 node:
+```
+/usr/share/elasticsearch/bin/elasticsearch-setup-passwords interactive
+```
+Use the following passwords:
+```
+User: elastic
+Password: elastic_566
 
-```
-:~$ helm dep list ./wordpress
-NAME   	VERSION	REPOSITORY                                       	STATUS 
-mariadb	7.x.x  	https://kubernetes-charts.storage.googleapis.com/	missing
-```
-```
-:~$ helm dep update ./wordpress
-:~$ helm dep list ./wordpress
-```
-now the state of the dep is OK
-install again
-```
-:~$ helm install training-wp-dep ./wordpress
-```
-the release will be installed
+User: apm_system
+Password: apm_system_566
 
-Clenup for the next lab
-```
-:~$ helm delete training-wp-dep
-:~$ rm -rf ./wordpress
+User: kibana
+Password: kibana_566
+
+User: logstash_system
+Password: logstash_system_566
+
+User: beats_system
+Password: beats_system_566
+
+User: remote_monitoring_user
+Password: remote_monitoring_user_566
 ```
