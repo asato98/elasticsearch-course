@@ -25,7 +25,7 @@ Accounts 1 and 10 have been closed by their previous owners and need to be delet
 
 **NOTE: The document IDs and account numbers of each document in the bank index are the same.**
 
-Your master-1 node has an Kibana instance which can be accessed in your local web browser by navigating to the public IP address of the master-1 node over port 8080 (example: http://public\_ip:8080). To log in, use the elastic user with the password elastic_566.
+Your master-1 node has a Kibana instance which can be accessed in your local web browser by navigating to the public IP address of the master-1 node over port 8080 (example: http://public_ip:8080). To log in, use the user: **elastic**  with the password: **elastic_566**.
 
 
 

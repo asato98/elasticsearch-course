@@ -1,5 +1,29 @@
 # Lab03: Encrypt the Elasticsearch Transport Network
 
+
+You are the administrator for a 3-node Elasticsearch cluster that has been used so far for ad-hoc, non-sensitive data analysis. However, the organization would like to leverage the analysis capabilities of Elasticsearch with some more sensitive data. Therefore, you will need to secure the cluster by encrypting the transport network and enabling user authentication so that any sensitive data will not be publicly available to anyone with network access.
+
+The security team has already created a PKCS#12 certificate package for you to use with your Elasticsearch cluster. This package has already been deployed at /etc/elasticsearch/certificate.p12 and should be used to encrypt the transport network with certificate-level verification. Once the transport network is encrypted, you will need to set the built-in user passwords, using the elasticsearch-setup-passwords utility, to the following:
+```
++------------------------+----------------------------+
+| User                   | Password                   |
++------------------------+----------------------------+
+| elastic                | elastic_566                |
++------------------------+----------------------------+
+| apm_system             | apm_system_566             |
++------------------------+----------------------------+
+| kibana                 | kibana_566                 |
++------------------------+----------------------------+
+| logstash_system        | logstash_system_566        |
++------------------------+----------------------------+
+| beats_system           | beats_system_566           |
++------------------------+----------------------------+
+| remote_monitoring_user | remote_monitoring_user_566 |
++------------------------+----------------------------+
+```
+
+
+
 ### 1. Configure transport network encryption.
 
 Using the Secure Shell (SSH), log in to each node as cloud_user via the public IP address.

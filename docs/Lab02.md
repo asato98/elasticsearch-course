@@ -1,5 +1,11 @@
 # Lab02: Deploy and Configure Kibana for an Elasticsearch Cluster
 
+
+You are a system administrator who has been given access to a 3-node Elasticsearch cluster. You would like to install a Kibana instance on the master-1 node in order to better interact with Elasticsearch APIs using Kibana's Console tool. For this, you will need to install Kibana 7.6.0 from an RPM at https://artifacts.elastic.co/downloads/kibana/kibana-7.6.0-x86_64.rpm. Then, you will need to bind Kibana on the private IP address of the master-1 node and port 8080 in order to be able to access it remotely from the internet.
+
+Once Kibana is up and running on the appropriate network address and port, you will need to navigate to http://PUBLIC_IP_ADDRESS_OF_MASTER-1:8080, access the console tool, and use it to interface with Elasticsearch.
+
+
 ### 1. Install Kibana on the master-1 node.
 
 Using the Secure Shell (SSH), log in to the master-1 node as cloud_user via the public IP address.

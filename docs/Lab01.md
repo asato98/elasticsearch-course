@@ -1,5 +1,23 @@
 # Lab 01: Deploy a Multi-Node Elasticsearch Cluster
 
+
+You are a system administrator who has been asked to deploy a 3-node Elasticsearch cluster with very specific configuration requirements:
+
+You will need to install Elasticsearch version 7.6.0 from an RPM at https://artifacts.elastic.co/downloads/elasticsearch/elasticsearch-7.6.0-x86_64.rpm.
+Each Elasticsearch instance will need to listen on both the local and site-local addresses.
+Configure each node of the cluster-1 cluster as outlined in the table below.
+```
++----------+-----------+------------+--------------+----------+
+| Server   | Node Name | Attributes | Roles        | JVM Heap |
++----------+-----------+------------+--------------+----------+
+| master-1 | master-1  |            | master       | 768m     |
++----------+-----------+------------+--------------+----------+
+| data-1   | data-1    | temp=hot   | data, ingest | 2g       |
++----------+-----------+------------+--------------+----------+
+| data-2   | data-2    | temp=warm  | data, ingest | 2g       |
++----------+-----------+------------+--------------+----------+
+```
+
 ### 1. Install Elasticsearch on each node.
 
 Using the Secure Shell (SSH), log in to each node as cloud_user via the public IP address.
