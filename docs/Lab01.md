@@ -136,17 +136,17 @@ Change the following on each node:
 ```
 #discovery.seed_hosts: ["host1", "host2"]
 ```
-to
+to the master IP
 ```
-discovery.seed_hosts: ["10.0.1.101"]
+discovery.seed_hosts: ["<IP_master>"]
 ```
 Change the following on each node:
 ```
 #cluster.initial_master_nodes: ["node-1", "node-2"]
 ```
-to
+to your master assigned name
 ```
-cluster.initial_master_nodes: ["master-1"]
+cluster.initial_master_nodes: ["<n_studente>-master"]
 ```
 ### 3. Configure the heap for each node per instructions.
 
