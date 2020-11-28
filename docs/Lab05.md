@@ -31,7 +31,7 @@ Install Logstash with default settings:
 ```
  systemctl enable logstash
  systemctl start logstash
- ```
+```
  ### 2. Install Filebeat and use the System Module
 
 Install Filebeat with default settings and use the system module:
@@ -78,4 +78,4 @@ For both the syslog and auth sections.
 ```
  systemctl enable filebeat
  systemctl start filebeat
- ```
+```
