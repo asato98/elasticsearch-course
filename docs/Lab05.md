@@ -11,7 +11,9 @@ Install Logstash with default settings:
 1.2 Add the Logstash repo:
 ```
  vi /etc/yum.repos.d/logstash.repo
+```
 
+```
  [logstash-6.x]
  name=Elastic repository for 6.x packages
  baseurl=https://artifacts.elastic.co/packages/6.x/yum
@@ -20,7 +22,7 @@ Install Logstash with default settings:
  enabled=1
  autorefresh=1
  type=rpm-md
- ```
+```
 1.3 Install Logstash
 ```
  yum install logstash -y
