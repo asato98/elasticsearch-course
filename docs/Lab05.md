@@ -32,7 +32,7 @@ Install Logstash with default settings:
  systemctl enable logstash
  systemctl start logstash
 ```
- ### 2. Install Filebeat and use the System Module
+### 2. Install Filebeat and use the System Module
 
 Install Filebeat with default settings and use the system module:
 
