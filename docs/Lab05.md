@@ -1,6 +1,8 @@
 # Lab05: Working with Logstash
 
-### 1. Install Logstash with default settings:
+### 1. Install Logstash
+
+Install Logstash with default settings:
 
 1.1 Import the Logstash key:
 ```
