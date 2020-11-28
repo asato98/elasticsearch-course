@@ -61,33 +61,33 @@ Change the following line:
 ```
 to
 ```
-cluster.name: cluster-1
+cluster.name: cluster-<n_studente>
 ```
-Change the following line on master-1:
-```
-#node.name: node-1
-```
-to
-```
-node.name: master-1
-```
-Change the following line on data-1:
+Change the following line on *<n_studente>*-master-1:
 ```
 #node.name: node-1
 ```
 to
 ```
-node.name: data-1
+node.name: <n_studente>-master
 ```
-Change the following line on data-2:
+Change the following line on *<n_studente>*-data-1:
 ```
 #node.name: node-1
 ```
 to
 ```
-node.name: data-2
+node.name: <n_studente>-data1
 ```
-Change the following line on data-1:
+Change the following line on *<n_studente>*-data-2:
+```
+#node.name: node-1
+```
+to
+```
+node.name: <n_studente>-data2
+```
+Change the following line on *<n_studente>*-data-1:
 ```
 #node.attr.rack: r1
 ```
@@ -95,7 +95,7 @@ to
 ```
 node.attr.temp: hot
 ```
-Change the following line on data-2:
+Change the following line on *<n_studente>*-data-2:
 ```
 #node.attr.rack: r1
 ```
@@ -103,21 +103,21 @@ to
 ```
 node.attr.temp: warm
 ```
-Add the following lines on master-1:
+Add the following lines on *<n_studente>*-master:
 ```
 node.master: true
 node.data: false
 node.ingest: false
 node.ml: false
 ```
-Add the following lines on data-1:
+Add the following lines on *<n_studente>*-data1:
 ```
 node.master: false
 node.data: true
 node.ingest: true
 node.ml: false
 ```
-Add the following lines on data-2:
+Add the following lines on *<n_studente>*-data-2:
 ```
 node.master: false
 node.data: true
