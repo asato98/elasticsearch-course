@@ -28,17 +28,20 @@ sudo su -
 ```
 Import the Elastic GPG key:
 ```
-rpm --import https://artifacts.elastic.co/GPG-KEY-elasticsearch
+wget -qO - https://artifacts.elastic.co/GPG-KEY-elasticsearch | sudo apt-key add -
 ```
-Download the Elasticsearch 7.6 RPM:
+Add Elastic repository:
 ```
-curl -O https://artifacts.elastic.co/downloads/elasticsearch/elasticsearch-7.6.0-x86_64.rpm
+echo "deb https://artifacts.elastic.co/packages/7.x/apt stable main" | sudo tee /etc/apt/sources.list.d/elastic-7.x.list
 ```
 Install Elasticsearch:
 ```
-rpm --install elasticsearch-7.6.0-x86_64.rpm
+apt-get update && sudo apt-get install elasticsearch=7.6.0
 ```
 Configure Elasticsearch to start on system boot:
+```
+sudo systemctl daemon-reload
+```
 ```
 systemctl enable elasticsearch
 ```
