@@ -1,4 +1,4 @@
-[Lab01](Lab01.md) - Installing Helm
+[Lab01](Lab01.md) - Deploy a Multi-Node Elasticsearch Cluster
 
 [Lab02](Lab02.md) - Working with Helm
 
