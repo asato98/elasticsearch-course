@@ -1,47 +1,50 @@
-# Lab06: Define Elasticsearch Indices 
+# Lab06: Define User Access Control in Elasticsearch 
 
 
-You work as a system administrator for a 3-node Elasticsearch cluster. You are being asked to prepare the Elasticsearch cluster to ingest some log data by creating the neccessary indices. We would like to search the data by using aliases such as this_week or last_week. This makes it easy to search the data you care about since you don't have to know the specific index names. Using the console tool in Kibana, create the following indices:
-``` 
-+---------+-----------+----------------+----------------+
-| Name    | Alias     | Primary Shards | Replica Shards |
-+---------+-----------+----------------+----------------+
-| logs-01 | this_week | 2              | 1              |
-+---------+-----------+----------------+----------------+
-| logs-02 | last_week | 2              | 1              |
-+---------+-----------+----------------+----------------+
-```
+You are the system administrator for a 3-node Elasticsearch cluster. In order to better support your cluster, you will have your Network Operations Center (NOC) handle all of the day-to-day monitoring of your cluster and its data so that it can quickly identify and report any percieved issues. For this, you will need to give the NOC access to the cluster but in order to follow security best practices, you will need to give them the least amount of permissions possible to do their job.
+
+You will need to create a new role called monitor that has read and monitor permissions to all indexes in your cluster. Then, you will need to create a new user called noc who will be given the custom monitor role in addition to the built in roles kibana_user and monitoriing_user which are required for access to Kibana's Monitoring plugin. Beyond that, the noc user should have no further permissions to the cluster. The noc user should be created as follows:
+
+Username: noc
+Full Name: Network Operations Center
+Email: noc@company.com
+Roles: monitor, kibana_user, monitoring_user
+Password: noc_566
 
 Your master-1 node has a Kibana instance which can be accessed in your local web browser by navigating to the public IP address of the master-1 node over port 8080 (example: http://public_ip:8080). To log in, use the user: **elastic**  with the password: **elastic_566**.
 
 
-### 1. Create the logs-01 index.
-
+### 1. Create the monitor role.
 Use the Kibana console tool to execute the following:
 ```
-PUT /logs-01
+POST _security/role/monitor
 {
-  "aliases": {
-    "this_week": {}
-  },
-  "settings": {
-    "number_of_shards": 2,
-    "number_of_replicas": 1
-  }
+  "indices": [
+    {
+      "names": [
+        "*"
+      ],
+      "privileges": [
+        "read",
+        "monitor"
+      ]
+    }
+  ]
 }
 ```
-### 2. Create the logs-02 index.
+### 2. Create the noc user.
 
 Use the Kibana console tool to execute the following:
 ```
-PUT /logs-02
+POST _security/user/noc
 {
-  "aliases": {
-    "last_week": {}
-  },
-  "settings": {
-    "number_of_shards": 2,
-    "number_of_replicas": 1
-  }
+  "roles": [
+    "kibana_user",
+    "monitor",
+    "monitoring_user"
+  ],
+  "full_name": "Network Operations Center",
+  "email": "noc@company.com",
+  "password": "noc_566"
 }
 ```

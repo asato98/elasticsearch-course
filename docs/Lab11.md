@@ -1,32 +1,24 @@
-# Lab11: Diagnose and Repair Elasticsearch Indices
+# Lab11: Enable Elasticsearch Cluster Monitoring
 
 
-You are the new administrator for a 3-node Elasticsearch cluster. Upon taking ownership of the cluster, you find that several indexes which are not in a green state. You are being asked by your superiors to prioritize the troubleshooting of the index allocation issues above all other work. All indices will need to be allocated with a green state and any indices that were previously red should be configured to fail to a yellow state should the same failures happen again.
+You work as a data infrastructure engineer for a large IT shop where one of your DevOps teams want to utilize Elasticsearch for a new project. You have a 3-node Elasticsearch cluster with Kibana already created to use as a proof of concept for the project but you want to enable self-monitoring on the cluster so that you can observe the cluster performance in order to make informed design decisions for a later production deployment.
+
+For this, you will need to enable the collection of monitoring data on the 3-node cluster. Since this is not a production cluster, it will be self-monitored so there will be no need to setup remote monitoring at this time.
 
 Your master-1 node has a Kibana instance which can be accessed in your local web browser by navigating to the public IP address of the master-1 node over port 8080 (example: http://public_ip:8080). To log in, use the user: **elastic**  with the password: **elastic_566**.
 
 
-### 1. Troubleshoot any red-state indices.
-
-Using the Secure Shell (SSH), log in to the data-1node ascloud_user` via the public IP address.
-
-Start the elasticsearch node with:
-```
-sudo systemctl start elasticsearch
-```
-Use the Kibana console tool to execute the following:
-```
-PUT logs-02/_settings
-{
-  "number_of_replicas": 1
-}
-```
-### 2. Troubleshoot any yellow-state indices.
+### 1. Enable the collection of monitoring data.
 
 Use the Kibana console tool to execute the following:
 ```
-PUT logs-01/_settings
+PUT _cluster/settings
 {
-  "number_of_replicas": 1
+  "persistent": {
+    "xpack.monitoring.collection.enabled": true
+  }
 }
 ```
+### 2. Explore the Monitoring data in Kibana.
+
+From Kibana, navigate to the "Stack Monitoring" application and explore the monitoring data.

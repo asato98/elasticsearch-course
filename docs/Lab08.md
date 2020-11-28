@@ -1,85 +1,71 @@
-# Lab08: Search Data in Elasticsearch
+# Lab08: Execute CRUD Operations in Elasticsearch
 
 
-You work as an Elasticsearch consultant and have been hired by a local university looking to implement Elasticsearch for literary research. The team you are working with is creating a UI that will enable students to perform search analysis on various works of literature. The test setup you are working with is a 3-node Elasticsearch cluster loaded with the complete works of Shakespeare. In order for the UI to display the desired search results, you must help the team come up with a few search requests that meet the following requirements:
+You work as an Elasticsearch administrator for a banking company. A recent failed deployment and subsequent rollback of your banking software has desynchronized some actions that were taken against a few accounts. To quickly rectify the desynchronization, you are being asked to perform manual CRUD operations to the bank index in Elasticsearch using the Kibana console tool.
 
-Query 1:
+An account needs to be added with the following customer data:
 
-A term-level search where the speaker is "ROMEO".
+Account Number: 1000
+Balance: $65,536
+Firstname: John
+Lastname: Doe
+Age: 23
+Gender: Male
+Address: 45 West 27th Street
+Employer: Elastic
+Email: john@elastic.com
+City: New York
+State: NY
+Account 100 has changed addresses and needs the following fields updated:
 
-Query 2:
+Address: 1600 Pennsylvania Ave NW
+City: Washington
+State: DC
+Accounts 1 and 10 have been closed by their previous owners and need to be deleted.
 
-A term-level search that returns the first 25 results where the play name is "Henry VI Part 1", Henry VI Part 2", or "Henry VI Part 3".
-
-Query 3:
-
-A full-text search that returns the first 5 results where the text entry contains the word "London".
-
-Query 4:
-
-A full-text search where the text entry contains the phrase "O Romeo".
+**NOTE: The document IDs and account numbers of each document in the bank index are the same.**
 
 Your master-1 node has a Kibana instance which can be accessed in your local web browser by navigating to the public IP address of the master-1 node over port 8080 (example: http://public_ip:8080). To log in, use the user: **elastic**  with the password: **elastic_566**.
 
 
 
-### 1. Create a search query that meets the requirements of Query 1.
+
+### 1. Create account 1000.
 
 Use the Kibana console tool to execute the following:
 ```
-GET shakespeare/_search
+PUT bank/_doc/1000
 {
-  "query": {
-    "term": {
-      "speaker.keyword": {
-        "value": "ROMEO"
-      }
-    }
-  }
+  "account_number": 1000,
+  "balance": 65536,
+  "firstname": "John",
+  "lastname": "Doe",
+  "age": 23,
+  "gender": "M",
+  "address": "45 West 27th Street",
+  "employer": "Elastic",
+  "email": "john@elastic.com",
+  "city": "New York",
+  "state": "NY"
 }
 ```
-### 2. Create a search query that meets the requirements of Query 2.
+### 2. Update the address for account 100.
 
 Use the Kibana console tool to execute the following:
 ```
-GET shakespeare/_search
+POST bank/_update/100/
 {
-  "size": 25, 
-  "query": {
-    "terms": {
-      "play_name.keyword": [
-        "Henry VI Part 1",
-        "Henry VI Part 2",
-        "Henry VI Part 3"
-      ]
-    }
+  "doc": {
+    "address": "1600 Pennsylvania Ave NW",
+    "city": "Washington",
+    "state": "DC"
   }
 }
 ```
-### 3. Create a search query that meets the requirements of Query 3.
+### 3. Delete accounts 1 and 10.
 
 Use the Kibana console tool to execute the following:
 ```
-GET shakespeare/_search
-{
-  "size": 5, 
-  "query": {
-    "match": {
-      "text_entry": "London"
-    }
-  }
-}
-```
-### 4. Create a search query that meets the requirements of Query 4.
-
-Use the Kibana console tool to execute the following:
-```
-GET shakespeare/_search
-{
-  "query": {
-    "match_phrase": {
-      "text_entry": "O Romeo"
-    }
-  }
-}
+DELETE bank/_doc/1
+DELETE bank/_doc/10
 ```

@@ -14,13 +14,15 @@ Become the root user with:
 ```
 sudo su -
 ```
-Download the Kibana 7.6 RPM:
+
+update repo index
 ```
-curl -O https://artifacts.elastic.co/downloads/kibana/kibana-7.6.0-x86_64.rpm
+apt-get update
 ```
+
 Install Kibana:
 ```
-rpm --install kibana-7.6.0-x86_64.rpm
+apt-get install kibana=7.6.0
 ```
 Configure Kibana to start on system boot:
 ```
@@ -48,9 +50,9 @@ Change the following line:
 ```
 #server.host: "localhost"
 ```
-to
+to the master IP
 ```
-server.host: "10.0.1.101"
+server.host: "<IP_master>"
 ```
 ### 3. Start Kibana.
 
@@ -64,7 +66,7 @@ systemctl start kibana
 ```
 ### 4. Use Kibana's Console tool.
 
-After Kibana has finished starting up, which may take a few minutes navigate to http://PUBLIC_IP_ADDRESS_OF_MASTER-1:8080 in your web browser and navigate to Dev Tools > Console.
+After Kibana has finished starting up, which may take a few minutes navigate to http://IP_ADDRESS_OF_MASTER:8080 in your web browser and navigate to Dev Tools > Console.
 
 Check the node status of the cluster via the console tool with:
 ```
