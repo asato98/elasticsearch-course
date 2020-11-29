@@ -162,3 +162,11 @@ in
 elasticsearch.username: "kibana"
 elasticseaerch.password: "kibana_566"
 ```
+Restart kibana service:
+
+```
+systemctl restart kibana
+```
+wait kibana startup and try to connect with yor master_ip:8080
+
+Then enter credential and enter at "elastic" user with relative password "elastic_566".
