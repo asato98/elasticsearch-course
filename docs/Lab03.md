@@ -61,22 +61,41 @@ scp cluster-<n_stduente> student@<your_data2_ip_address>:/home/student
 ```
 cluster-<n_studente>                                              100% 3455     3.4MB/s   00:00
 ```
+connect to **data1** and **data2** nodes and change owner, permission and path for the cert file
+```
+sudo -su
+```
+```
+mkdir /etc/elasticsearch/certs
+```
+```
+chown root:elasticsearch /home/student/cluster-<n_studente> 
+```
+```
+mv /home/student/cluster-<n_studente> /etc/elasticsearch/certs
+```
+Change permissions:
+```
+chmod 640 /etc/elasticsearch/certs/cluster-<n_studente>
+```
 
-Add the following to /etc/elasticsearch/elasticsearch.yml on each node:
+
+
+**Add the following to /etc/elasticsearch/elasticsearch.yml on each node**:
 ```
 # --------------------------------- Security -----------------------------------
 #
 xpack.security.enabled: true
 xpack.security.transport.ssl.enabled: true
 xpack.security.transport.ssl.verification_mode: certificate
-xpack.security.transport.ssl.keystore.path: certificate.p12
-xpack.security.transport.ssl.truststore.path: certificate.p12
+xpack.security.transport.ssl.keystore.path: certs/cluster-<n_studente>
+xpack.security.transport.ssl.truststore.path: certs/cluster-<n_studente>
 ```
 ### 2. Restart Elasticsearch.
 
-Start Elasticsearch with:
+Restart Elasticsearch with:
 ```
-systemctl start elasticsearch
+systemctl restart elasticsearch
 ```
 ### 3. Set the password for each built-in user.
 
