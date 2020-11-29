@@ -26,12 +26,44 @@ The security team has already created a PKCS#12 certificate package for you to u
 
 ### 1. Configure transport network encryption.
 
-Using the Secure Shell (SSH), log in to each node as cloud_user via the public IP address.
+Using the Secure Shell (SSH), log in to each node as cloud_user via the  IP address.
 
-Become the root user with:
+on Master Node become the root user with:
 ```
 sudo su -
 ```
+move to the elasticsearch dir and create certs dir
+```
+cd /etc/elasticsearch/
+mkdir certs
+cd certs
+```
+Create Certificate for KeyPairing that reflect your cluster name:
+```
+/usr/share/elasticsearch/bin/elasticsearch-certutil cert --name cluster-<n_studente> --out /etc/elasticsearch/certs/cluster-<n_studente>
+
+ls
+```
+you need to retrive ip addresses of your data nodes:
+
+on your data nodes
+```
+ifconfig | grep "inet"
+```
+```
+> inet <your_ip_address>  netmask 255.255.255.0  broadcast 10.10.10.255
+```
+copy your certificate with scp on other nodes, when prompted enter password **DesotechKube1!**
+```
+scp cluster-<n_stduente> student@<your_data1_ip_address>:/home/student
+```
+```
+scp cluster-<n_stduente> student@<your_data2_ip_address>:/home/student
+```
+```
+> cluster-<n_studente>                                              100% 3455     3.4MB/s   00:00
+```
+
 Add the following to /etc/elasticsearch/elasticsearch.yml on each node:
 ```
 # --------------------------------- Security -----------------------------------
