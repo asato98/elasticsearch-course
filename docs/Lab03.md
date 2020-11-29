@@ -41,8 +41,6 @@ cd certs
 Create Certificate for KeyPairing that reflect your cluster name:
 ```
 /usr/share/elasticsearch/bin/elasticsearch-certutil cert --name cluster-<n_studente> --out /etc/elasticsearch/certs/cluster-<n_studente>
-
-ls
 ```
 you need to retrive ip addresses of your data nodes:
 
@@ -51,7 +49,7 @@ on your data nodes
 ifconfig | grep "inet"
 ```
 ```
-> inet <your_ip_address>  netmask 255.255.255.0  broadcast 10.10.10.255
+>inet <your_ip_address>  netmask 255.255.255.0  broadcast 10.10.10.255
 ```
 copy your certificate with scp on other nodes, when prompted enter password **DesotechKube1!**
 ```
@@ -61,7 +59,7 @@ scp cluster-<n_stduente> student@<your_data1_ip_address>:/home/student
 scp cluster-<n_stduente> student@<your_data2_ip_address>:/home/student
 ```
 ```
-> cluster-<n_studente>                                              100% 3455     3.4MB/s   00:00
+>cluster-<n_studente>                                              100% 3455     3.4MB/s   00:00
 ```
 
 Add the following to /etc/elasticsearch/elasticsearch.yml on each node:
