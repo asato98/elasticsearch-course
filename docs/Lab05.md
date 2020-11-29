@@ -10,13 +10,13 @@ Install Logstash with default settings:
 ```
 1.3 Install Logstash
 ```
- apt-get install logstash 
+ apt-get install logstash=7.6.0
 ```
 1.4 Enable and start Logstash:
 ```
  systemctl enable logstash
  systemctl start logstash
- ```
+```
 
 
 ### 2. Install Filebeat and use the System Module
@@ -25,7 +25,7 @@ Install Filebeat with default settings and use the system module:
 
 2.2 Install Filebeat:
 ```
-apt-get install filebeat=6.2.3
+apt-get install filebeat=7.6.0
 ```
 2.3 Edit the system module to convert timestamp timezones to UTC:
 
