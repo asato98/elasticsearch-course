@@ -130,3 +130,35 @@ Password: beats_system_566
 User: remote_monitoring_user
 Password: remote_monitoring_user_566
 ```
+test your password:
+```
+curl localhost:9200/_cat/nodes?v
+```
+```
+{"error":{"root_cause":[{"type":"security_exception","reason":"missing authentication credentials for REST request [/_cat/nodes?v]","header":{"WWW-Authenticate":"Basic realm=\"security\" charset=\"UTF-8\""}}],"type":"security_exception","reason":"missing authentication credentials for REST request [/_cat/nodes?v]","header":{"WWW-Authenticate":"Basic realm=\"security\" charset=\"UTF-8\""}},"status"
+```
+try again with user-pass
+```
+curl localhost:9200/_cat/nodes?v -u elastic
+```
+and type elastic password.
+
+### 4. Securize Kibana
+
+
+Now cluster is securized and Kibana needs a user password configuration
+```
+vim /etc/kibana/kibana.yml
+```
+change the following lines:
+
+```
+#elasticsearch.username: "kibana"
+#elasticseaerch.password: "pass"
+```
+in
+
+```
+elasticsearch.username: "kibana"
+elasticseaerch.password: "kibana_566"
+```
