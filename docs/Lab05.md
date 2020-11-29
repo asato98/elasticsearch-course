@@ -10,7 +10,7 @@ Install Logstash with default settings:
 ```
 1.3 Install Logstash
 ```
- apt-get install logstash=7.6.0
+ apt-get install logstash
 ```
 1.4 Enable and start Logstash:
 ```
