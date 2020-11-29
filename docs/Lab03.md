@@ -63,7 +63,7 @@ cluster-<n_studente>                                              100% 3455     
 ```
 connect to **data1** and **data2** nodes and change owner, permission and path for the cert file
 ```
-sudo -su
+sudo su -
 ```
 ```
 mkdir /etc/elasticsearch/certs
