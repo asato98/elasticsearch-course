@@ -1,48 +1,31 @@
 # Lab05: Working with Logstash
 
 ### 1. Install Logstash
-
+ 
 Install Logstash with default settings:
-
-1.1 Import the Logstash key:
+ 
+1.1 update repositories indexes:
 ```
- rpm --import https://artifacts.elastic.co/GPG-KEY-elasticsearch
-```
-1.2 Add the Logstash repo:
-```
- vi /etc/yum.repos.d/logstash.repo
-```
-
-```
- [logstash-6.x]
- name=Elastic repository for 6.x packages
- baseurl=https://artifacts.elastic.co/packages/6.x/yum
- gpgcheck=1
- gpgkey=https://artifacts.elastic.co/GPG-KEY-elasticsearch
- enabled=1
- autorefresh=1
- type=rpm-md
+ apt-get update
 ```
 1.3 Install Logstash
 ```
- yum install logstash -y
+ apt-get install logstash 
 ```
 1.4 Enable and start Logstash:
 ```
  systemctl enable logstash
  systemctl start logstash
-```
+ ```
+
+
 ### 2. Install Filebeat and use the System Module
 
 Install Filebeat with default settings and use the system module:
 
-2.1 Download Filebeat:
-```
- curl -O https://artifacts.elastic.co/downloads/beats/filebeat/filebeat-6.2.3-x86_64.rpm
-```
 2.2 Install Filebeat:
 ```
- rpm --install filebeat-6.2.3-x86_64.rpm
+apt-get install filebeat=6.2.3
 ```
 2.3 Edit the system module to convert timestamp timezones to UTC:
 
