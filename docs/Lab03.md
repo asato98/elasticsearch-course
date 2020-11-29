@@ -42,6 +42,13 @@ Create Certificate for KeyPairing that reflect your cluster name:
 ```
 /usr/share/elasticsearch/bin/elasticsearch-certutil cert --name cluster-<n_studente> --out /etc/elasticsearch/certs/cluster-<n_studente>
 ```
+Verify the certificate and set the permission:
+```
+ls -l
+chmod 640 cluster-<n_studente>
+```
+
+
 you need to retrive ip addresses of your data nodes:
 
 on your data nodes
