@@ -27,32 +27,25 @@ Install Filebeat with default settings and use the system module:
 ```
 apt-get install filebeat=7.6.0
 ```
-2.3 Edit the system module to convert timestamp timezones to UTC:
 
-In /etc/filebeat/modules.d/system.yml.disabled, change:
+Modify /etc/filebeat/filebeat.yml to set the connection information:
 ```
- # Convert the timestamp to UTC. Requires Elasticsearch >= 6.1.
- #var.convert_timezone: false
+output.elasticsearch:
+  hosts: ["<master_IP>:9200"]
+  username: "elastic"
+  password: "elastic_566"
+setup.kibana:
+  host: "<<master_IP>:8080"
 ```
-To:
-```
- # Convert the timestamp to UTC. Requires Elasticsearch >= 6.1.
- var.convert_timezone: true
-```
+
 For both the syslog and auth sections.
 
-2.4 Enable the system Filebeat module:
+2.4 Enable the system and logstash Filebeat modules:
 ```
  filebeat modules enable system
+ filebeat modules enable logstash
 ```
-2.5 Install the ingest-geoip filter plugin for Elasticsearch ingest node:
-```
- /usr/share/elasticsearch/bin/elasticsearch-plugin install ingest-geoip
-```
-2.6 Restart Elasticsearch so it can use the new ingest-geoip plugin:
-```
- systemctl restart elasticsearch
-```
+
 2.7 Once Elasticsearch starts up, push module assets to Elasticsearch and Kibana:
 ```
  filebeat setup
