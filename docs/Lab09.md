@@ -5,11 +5,11 @@ You work as an Elasticsearch consultant and have been hired by a local universit
 
 Query 1:
 
-A term-level search where the speaker is "ROMEO".
+A term-level search where the State is "CO" .
 
 Query 2:
 
-A term-level search that returns the first 25 results where the play name is "Henry VI Part 1", Henry VI Part 2", or "Henry VI Part 3".
+A term-level search that returns the first 25 results where the gender is "M".
 
 Query 3:
 
@@ -26,14 +26,28 @@ Your master-1 node has a Kibana instance which can be accessed in your local web
 ### 1. Create a search query that meets the requirements of Query 1.
 
 Use the Kibana console tool to execute the following:
+
+for global search
 ```
-GET shakespeare/_search
+GET bank/_search
+```
+and you can define many hit you need to show:
+```
+GET bank/_search?size=3
+
+GET bank/_search?size=50
+```
+now search with a query
+
+```
+GET bank/_search
 {
+  "size": 1000, 
   "query": {
-    "term": {
-      "speaker.keyword": {
-        "value": "ROMEO"
-      }
+    "terms": {
+      "state.keyword": [
+        "CO"
+      ]
     }
   }
 }
@@ -42,15 +56,13 @@ GET shakespeare/_search
 
 Use the Kibana console tool to execute the following:
 ```
-GET shakespeare/_search
+GET bank/_search
 {
   "size": 25, 
   "query": {
     "terms": {
-      "play_name.keyword": [
-        "Henry VI Part 1",
-        "Henry VI Part 2",
-        "Henry VI Part 3"
+      "gender.keyword": [
+        "M"
       ]
     }
   }
