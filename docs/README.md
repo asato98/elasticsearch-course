@@ -20,4 +20,6 @@
 
 [Lab11](Lab11.md) - Enable Elasticsearch Cluster Monitoring
 
-[Lab12](Lab12.md) - Diagnose and Repair Elasticsearch Indices
+[Lab12](Lab12.md) - Install and configure Metricbeat
+
+[Lab13](Lab13.md) - Install and configure Filebeat on Kubernetes and monitoring
