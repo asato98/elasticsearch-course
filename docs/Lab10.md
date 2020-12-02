@@ -37,12 +37,15 @@ GET bank/_search
     "state": {
       "terms": {
         "field": "state.keyword",
-        "size": 50
+        "size": 100
       }
     }
   }
 }
 ```
+you can find the Italia state previously added.
+
+
 ### 3. Create an aggregation to answer question 3.
 
 Use the Kibana console tool to execute the following:
