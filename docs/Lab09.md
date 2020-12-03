@@ -1,4 +1,4 @@
-# Lab10: Aggregate Data in Elasticsearch
+# Lab09: Aggregate Data in Elasticsearch
 
 
 You work as a data analyst for an online banking company that uses a 3-node Elasticsearch cluster as a NoSQL database for active accounts. You have been asked to determine the answers to a series of questions using the Elasticsearch search API. Your searches should not return any documents and should only provide the aggregation result.
