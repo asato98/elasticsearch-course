@@ -1,4 +1,4 @@
-# Lab08: Execute CRUD Operations in Elasticsearch
+# Lab07: Execute CRUD Operations in Elasticsearch
 
 
 You work as an Elasticsearch administrator for a banking company. A recent failed deployment and subsequent rollback of your banking software has desynchronized some actions that were taken against a few accounts. To quickly rectify the desynchronization, you are being asked to perform manual CRUD operations to the bank index in Elasticsearch using the Kibana console tool.
