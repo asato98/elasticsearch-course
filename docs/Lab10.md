@@ -1,4 +1,4 @@
-# Lab11: Enable Elasticsearch Cluster Monitoring
+# Lab10: Enable Elasticsearch Cluster Monitoring
 
 
 You work as a data infrastructure engineer for a large IT shop where one of your DevOps teams want to utilize Elasticsearch for a new project. You have a 3-node Elasticsearch cluster with Kibana already created to use as a proof of concept for the project but you want to enable self-monitoring on the cluster so that you can observe the cluster performance in order to make informed design decisions for a later production deployment.
