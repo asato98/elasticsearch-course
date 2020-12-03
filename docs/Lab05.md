@@ -1,4 +1,4 @@
-# Lab06: Define User Access Control in Elasticsearch 
+# Lab05: Define User Access Control in Elasticsearch 
 
 
 You are the system administrator for a 3-node Elasticsearch cluster. In order to better support your cluster, you will have your Network Operations Center (NOC) handle all of the day-to-day monitoring of your cluster and its data so that it can quickly identify and report any percieved issues. For this, you will need to give the NOC access to the cluster but in order to follow security best practices, you will need to give them the least amount of permissions possible to do their job.
