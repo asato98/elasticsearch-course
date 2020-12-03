@@ -1,4 +1,4 @@
-# Lab12: Use Metric beats
+# Lab11: Use Metric beats
 
 ### 1. Install Filebeat and use the System Module
 
