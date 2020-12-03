@@ -1,45 +1,53 @@
-# Lab12: Use Metric beats
+# Lab13: Use filebeats under Kubernetes
 
 
 
 
-### 1. Install metricbeat.
-let's start with updating repositories
+### 1. deploy filebeat on Kubernetes
+**On your Data1 node**
+
+download filebeat manifest
 
 ```
-apt-get update
+curl -O https://raw.githubusercontent.com/nabilsato/elasticstack/main/filebeat-kubernetes.yaml
 ```
-then install metricbeat:
-```
-apt-get install metricbeat=7.6.0
-```
-### 2. Configure Metricbeat to connect.
-
-move into configuration path
-```
-cd /etc/metricbeat/
-```
-and edit metricbeat.yml file with your cluster values
+modify the Daemonset object to match your cluster configuration on the manifest:
 
 ```
-output.elasticsearch:
-  hosts: ["<master_IP>:9200"]
-  username: "elastic"
-  password: "elastic_566"
-setup.kibana:
-  host: "<<master_IP>:8080"
+vi filebeat-kubernetes.yaml
 ```
-Now enable system module and setup
+```
+env:
+        - name: ELASTICSEARCH_HOST
+          value: <IP_master>
+        - name: ELASTICSEARCH_PORT
+          value: "9200"
+        - name: ELASTICSEARCH_USERNAME
+          value: elastic
+        - name: ELASTICSEARCH_PASSWORD
+          value: elastic_566
+```
+
+then apply it:
+```
+kubectl apply -f filebeat-kubernetes.yaml
+```
+
+Now lets go to kibana and discover logs on your browser:
+```
+<master_IP>:8080
+```
+
+### 1. enable metricbeat module for Kubernetes monitoring
+
 
 ```
-metricbeat modules enable system
+metricbeat modules enable kubernetes
+
 metricbeat setup
 ```
 
-at the end of configuration enable and start the service
+Now lets go to kibana and discover k8s metrics on your browser:
 ```
-systemctl enable metricbeat
-systemctl start metricbeat
+<master_IP>:8080
 ```
-
-### 3. Repeat the step 1. and 2. on data1 and data2 nodes

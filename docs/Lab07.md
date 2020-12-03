@@ -1,185 +1,107 @@
-# Lab07: Define Elasticsearch Indices 
+# Lab08: Execute CRUD Operations in Elasticsearch
 
 
-You work as a system administrator for a 3-node Elasticsearch cluster. You are being asked to prepare the Elasticsearch cluster to ingest some log data by creating the neccessary indices. We would like to search the data by using aliases such as this_week or last_week. This makes it easy to search the data you care about since you don't have to know the specific index names. Using the console tool in Kibana, create the following indices:
-``` 
-+---------+-----------+----------------+----------------+
-| Name    | Alias     | Primary Shards | Replica Shards |
-+---------+-----------+----------------+----------------+
-| logs-01 | this_week | 2              | 1              |
-+---------+-----------+----------------+----------------+
-| logs-02 | last_week | 2              | 1              |
-+---------+-----------+----------------+----------------+
-```
+You work as an Elasticsearch administrator for a banking company. A recent failed deployment and subsequent rollback of your banking software has desynchronized some actions that were taken against a few accounts. To quickly rectify the desynchronization, you are being asked to perform manual CRUD operations to the bank index in Elasticsearch using the Kibana console tool.
+
+An account needs to be added with the following customer data:
+
+Account Number: 1000
+Balance: $65,536
+Firstname: John
+Lastname: Doe
+Age: 23
+Gender: Male
+Address: 45 West 27th Street
+Employer: Elastic
+Email: john@elastic.com
+City: New York
+State: NY
+Account 100 has changed addresses and needs the following fields updated:
+
+Address: 1600 Pennsylvania Ave NW
+City: Washington
+State: DC
+Accounts 1 and 10 have been closed by their previous owners and need to be deleted.
+
+**NOTE: The document IDs and account numbers of each document in the bank index are the same.**
 
 Your master-1 node has a Kibana instance which can be accessed in your local web browser by navigating to the public IP address of the master-1 node over port 8080 (example: http://public_ip:8080). To log in, use the user: **elastic**  with the password: **elastic_566**.
 
+### 1. Search data:
 
-### 1. Create the logs-01 index.
+```
+GET bank/_doc/4
+GET bank/_doc/2
+GET bank/_doc/100
+```
+verify that the document with id 1000 doesn’t exist:
+
+```
+GET bank/_doc/1000
+```
+```
+{
+  "_index" : "bank",
+  "_type" : "_doc",
+  "_id" : "1000",
+  "found" : false
+}
+```
+
+
+### 2. Create account 1000.
 
 Use the Kibana console tool to execute the following:
 ```
-PUT /logs-01
+PUT bank/_doc/1000
 {
-  "aliases": {
-    "this_week": {}
-  },
-  "settings": {
-    "number_of_shards": 2,
-    "number_of_replicas": 1
-  }
+  "account_number": 1000,
+  "balance": 65536,
+  "firstname": "Marco",
+  "lastname": "Benvenuti",
+  "age": 23,
+  "gender": "M",
+  "address": "Via Galilei 6",
+  "employer": "Elastic",
+  "email": "M.Benvenuti@elastic.com",
+  "city": "Roma",
+  "state": "Italia"
 }
 ```
-### 2. Create the logs-02 index.
+
+check it again
+```
+GET bank/_doc/1000
+```
+
+### 3. Update the address for account 100.
+
+check the account 100:
+```
+GET bank/_doc/100
+```
 
 Use the Kibana console tool to execute the following:
 ```
-PUT /logs-02
+POST bank/_update/100/
 {
-  "aliases": {
-    "last_week": {}
-  },
-  "settings": {
-    "number_of_shards": 2,
-    "number_of_replicas": 1
+  "doc": {
+    "address": "via Alighieri",
+    "city": "Milano",
+    "state": "Italia"
   }
 }
 ```
-### 3. Delete index.
+check it again
+
+```
+GET bank/_doc/100
+```
+
+### 3. Delete accounts 1 and 10.
 
 Use the Kibana console tool to execute the following:
-
 ```
-DELETE logs-01
-DELETE logs-02
+DELETE bank/_doc/1
+DELETE bank/_doc/10
 ```
-Result in:
-```
-{
-  "acknowledged" : true
-}
-```
-
-### 4. Add 3 new indeces.
-
-create the first index "bank"
-```
-PUT bank
-{
-  "settings": {
-    "number_of_shards": 1
-    , "number_of_replicas": 1
-  }
-}
-```
-create the second index "sheakspeare"
-```
-PUT shakespeare
-{
-  "mappings": {
-    "properties": {
-      "speaker": {
-        "type": "keyword"
-      },
-      "play_name": {
-        "type": "keyword"
-      },
-      "line_id": {
-        "type": "integer"
-      },
-      "speech_number": {
-        "type": "integer"
-      }
-    }
-  },
-  "settings": {
-    "number_of_shards": 1,
-    "number_of_replicas": 1
-  }
-}
-```
-create the second index "sheakspeare"
-```
-PUT logs
-{
-  "mappings": {
-    "properties": {
-      "geo": {
-        "properties": {
-          "coordinates": {
-            "type": "geo_point"
-          }
-        }
-      }
-    }
-  },
-  "settings": {
-    "number_of_shards": 1,
-    "number_of_replicas": 1
-  }
-}
-```
-
-
-### 5. Bulk Index Data.
-Now let’s go to add datato our indices with BULK API operation:
-
-on Master node download the files that contains data:
-```
-mkdir bulk-data
-cd bulk-data
-```
-```
-curl -O https://raw.githubusercontent.com/nabilsato/elasticstack/main/accounts.json
-```
-```
-curl -O https://raw.githubusercontent.com/nabilsato/elasticstack/main/shakespeare.json
-```
-```
-curl -O https://raw.githubusercontent.com/nabilsato/elasticstack/main/logs.json
-```
-check the files are downloaded:
-
-```
-ls
-```
-```
-root@01-master:~/bulk-data# ls
-accounts.json  logs.json  shakespeare.json
-```
-check the content of the files:
-
-```
-head accounts.json
-```
-Let's Bulk data from JSON files to the appropriate index:
-```
-curl -u elastic -k -H 'Content-type: application/x-ndjson' -X POST http://localhost:9200/bank/_bulk --data-binary @accounts.json
-```
-```
-curl -u elastic -k -H 'Content-type: application/x-ndjson' -X POST http://localhost:9200/bank/_bulk --data-binary @shakespeare.json
-```
-```
-curl -u elastic -k -H 'Content-type: application/x-ndjson' -X POST http://localhost:9200/bank/_bulk --data-binary @logs.json
-```
-and at the end check the data on Kibana (dev tool):
-
-```
-GET _cat/nodes?v
-```
-```
-GET _cat/indices?v
-```
-refresh the indices:
-```
-POST /bank/_refresh
-
-POST /shakespeare/_refresh
-
-POST /logs/_refresh
-```
-the documents are added and you will see the shakespeare index like this:
-```
-green  open   shakespeare                      GhpXu5ziR7Gh93J6gbEYkg   1   1     111396            0       39mb         19.5mb
-```
-

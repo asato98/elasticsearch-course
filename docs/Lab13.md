@@ -1,53 +1,57 @@
-# Lab13: Use filebeats under Kubernetes
+# Lab05: Working with Logstash and filebeat
 
-
-
-
-### 1. deploy filebeat on Kubernetes
-**On your Data1 node**
-
-download filebeat manifest
-
+### 1. Install Logstash
+ 
+Install Logstash with default settings:
+ 
+1.1 update repositories indexes:
 ```
-curl -O https://raw.githubusercontent.com/nabilsato/elasticstack/main/filebeat-kubernetes.yaml
+ apt-get update
 ```
-modify the Daemonset object to match your cluster configuration on the manifest:
-
+1.3 Install Logstash
 ```
-vi filebeat-kubernetes.yaml
+ apt-get install logstash
 ```
+1.4 Enable and start Logstash:
 ```
-env:
-        - name: ELASTICSEARCH_HOST
-          value: <IP_master>
-        - name: ELASTICSEARCH_PORT
-          value: "9200"
-        - name: ELASTICSEARCH_USERNAME
-          value: elastic
-        - name: ELASTICSEARCH_PASSWORD
-          value: elastic_566
+ systemctl enable logstash
+ systemctl start logstash
 ```
 
-then apply it:
+
+### 2. Install Filebeat and use the System Module
+
+Install Filebeat with default settings and use the system module:
+
+2.2 Install Filebeat:
 ```
-kubectl apply -f filebeat-kubernetes.yaml
+apt-get install filebeat=7.6.0
 ```
 
-Now lets go to kibana and discover logs on your browser:
+Modify /etc/filebeat/filebeat.yml to set the connection information:
 ```
-<master_IP>:8080
-```
-
-### 1. enable metricbeat module for Kubernetes monitoring
-
-
-```
-metricbeat modules enable kubernetes
-
-metricbeat setup
+output.elasticsearch:
+  hosts: ["<master_IP>:9200"]
+  username: "elastic"
+  password: "elastic_566"
+setup.kibana:
+  host: "<<master_IP>:8080"
 ```
 
-Now lets go to kibana and discover k8s metrics on your browser:
+For both the syslog and auth sections.
+
+2.4 Enable the system and logstash Filebeat modules:
 ```
-<master_IP>:8080
+ filebeat modules enable system
+ filebeat modules enable logstash
+```
+
+2.7 Once Elasticsearch starts up, push module assets to Elasticsearch and Kibana:
+```
+ filebeat setup
+```
+2.8 Enable and start Filebeat:
+```
+ systemctl enable filebeat
+ systemctl start filebeat
 ```

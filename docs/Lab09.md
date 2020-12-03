@@ -1,96 +1,76 @@
-# Lab09: Search Data in Elasticsearch
+# Lab10: Aggregate Data in Elasticsearch
 
 
-You work as an Elasticsearch consultant and have been hired by a local university looking to implement Elasticsearch for literary research. The team you are working with is creating a UI that will enable students to perform search analysis on various works of literature. The test setup you are working with is a 3-node Elasticsearch cluster loaded with the complete works of Shakespeare. In order for the UI to display the desired search results, you must help the team come up with a few search requests that meet the following requirements:
+You work as a data analyst for an online banking company that uses a 3-node Elasticsearch cluster as a NoSQL database for active accounts. You have been asked to determine the answers to a series of questions using the Elasticsearch search API. Your searches should not return any documents and should only provide the aggregation result.
 
-Query 1:
-
-A term-level search where the State is "CO" .
-
-Query 2:
-
-A term-level search that returns the first 25 results where the gender is "M".
-
-Query 3:
-
-A full-text search that returns the first 5 results where the text entry contains the word "London".
-
-Query 4:
-
-A full-text search where the text entry contains the phrase "O Romeo".
+1. How many unique employers are there among our account holders?
+2. How many accounts do we have in each of the 50 US states?
+3. What is the average balance for each of the 50 US states, and what state has the maximum average balance?
 
 Your master-1 node has a Kibana instance which can be accessed in your local web browser by navigating to the public IP address of the master-1 node over port 8080 (example: http://public_ip:8080). To log in, use the user: **elastic**  with the password: **elastic_566**.
 
 
-
-### 1. Create a search query that meets the requirements of Query 1.
-
-Use the Kibana console tool to execute the following:
-
-for global search
-```
-GET bank/_search
-```
-and you can define many hit you need to show:
-```
-GET bank/_search?size=3
-
-GET bank/_search?size=50
-```
-now search with a query
-
-```
-GET bank/_search
-{
-  "size": 1000, 
-  "query": {
-    "terms": {
-      "state.keyword": [
-        "CO"
-      ]
-    }
-  }
-}
-```
-### 2. Create a search query that meets the requirements of Query 2.
+### 1. Create an aggregation to answer question 1.
 
 Use the Kibana console tool to execute the following:
 ```
 GET bank/_search
 {
-  "size": 25, 
-  "query": {
-    "terms": {
-      "gender.keyword": [
-        "M"
-      ]
+  "size": 0,
+  "aggs": {
+    "employers": {
+      "cardinality": {
+        "field": "employer.keyword"
+      }
     }
   }
 }
 ```
-### 3. Create a search query that meets the requirements of Query 3.
+### 2. Create an aggregation to answer question 2.
 
 Use the Kibana console tool to execute the following:
 ```
-GET shakespeare/_search
+GET bank/_search
 {
-  "size": 5, 
-  "query": {
-    "match": {
-      "text_entry": "London"
+  "size": 0,
+  "aggs": {
+    "state": {
+      "terms": {
+        "field": "state.keyword",
+        "size": 100
+      }
     }
   }
 }
 ```
-### 4. Create a search query that meets the requirements of Query 4.
+you can find the Italia state previously added.
+
+
+### 3. Create an aggregation to answer question 3.
 
 Use the Kibana console tool to execute the following:
 ```
-GET shakespeare/_search
+GET bank/_search
 {
-  "query": {
-    "match_phrase": {
-      "text_entry": "O Romeo"
+  "size": 0,
+  "aggs": {
+    "state": {
+      "terms": {
+        "field": "state.keyword",
+        "size": 50
+      },
+      "aggs": {
+        "balance": {
+          "avg": {
+            "field": "balance"
+          }
+        }
+      }
+    },
+    "max_average_balance": {
+      "max_bucket": {
+        "buckets_path": "state>balance"
+      }
     }
   }
 }

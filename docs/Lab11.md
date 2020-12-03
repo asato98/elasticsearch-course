@@ -1,24 +1,45 @@
-# Lab11: Enable Elasticsearch Cluster Monitoring
+# Lab12: Use Metric beats
 
 
-You work as a data infrastructure engineer for a large IT shop where one of your DevOps teams want to utilize Elasticsearch for a new project. You have a 3-node Elasticsearch cluster with Kibana already created to use as a proof of concept for the project but you want to enable self-monitoring on the cluster so that you can observe the cluster performance in order to make informed design decisions for a later production deployment.
-
-For this, you will need to enable the collection of monitoring data on the 3-node cluster. Since this is not a production cluster, it will be self-monitored so there will be no need to setup remote monitoring at this time.
-
-Your master-1 node has a Kibana instance which can be accessed in your local web browser by navigating to the public IP address of the master-1 node over port 8080 (example: http://public_ip:8080). To log in, use the user: **elastic**  with the password: **elastic_566**.
 
 
-### 1. Enable the collection of monitoring data.
+### 1. Install metricbeat.
+let's start with updating repositories
 
-Use the Kibana console tool to execute the following:
 ```
-PUT _cluster/settings
-{
-  "persistent": {
-    "xpack.monitoring.collection.enabled": true
-  }
-}
+apt-get update
 ```
-### 2. Explore the Monitoring data in Kibana.
+then install metricbeat:
+```
+apt-get install metricbeat=7.6.0
+```
+### 2. Configure Metricbeat to connect.
 
-From Kibana, navigate to the "Stack Monitoring" application and explore the monitoring data.
+move into configuration path
+```
+cd /etc/metricbeat/
+```
+and edit metricbeat.yml file with your cluster values
+
+```
+output.elasticsearch:
+  hosts: ["<master_IP>:9200"]
+  username: "elastic"
+  password: "elastic_566"
+setup.kibana:
+  host: "<<master_IP>:8080"
+```
+Now enable system module and setup
+
+```
+metricbeat modules enable system
+metricbeat setup
+```
+
+at the end of configuration enable and start the service
+```
+systemctl enable metricbeat
+systemctl start metricbeat
+```
+
+### 3. Repeat the step 1. and 2. on data1 and data2 nodes

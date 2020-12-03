@@ -1,77 +1,24 @@
-# Lab10: Aggregate Data in Elasticsearch
+# Lab11: Enable Elasticsearch Cluster Monitoring
 
 
-You work as a data analyst for an online banking company that uses a 3-node Elasticsearch cluster as a NoSQL database for active accounts. You have been asked to determine the answers to a series of questions using the Elasticsearch search API. Your searches should not return any documents and should only provide the aggregation result.
+You work as a data infrastructure engineer for a large IT shop where one of your DevOps teams want to utilize Elasticsearch for a new project. You have a 3-node Elasticsearch cluster with Kibana already created to use as a proof of concept for the project but you want to enable self-monitoring on the cluster so that you can observe the cluster performance in order to make informed design decisions for a later production deployment.
 
-1. How many unique employers are there among our account holders?
-2. How many accounts do we have in each of the 50 US states?
-3. What is the average balance for each of the 50 US states, and what state has the maximum average balance?
+For this, you will need to enable the collection of monitoring data on the 3-node cluster. Since this is not a production cluster, it will be self-monitored so there will be no need to setup remote monitoring at this time.
 
 Your master-1 node has a Kibana instance which can be accessed in your local web browser by navigating to the public IP address of the master-1 node over port 8080 (example: http://public_ip:8080). To log in, use the user: **elastic**  with the password: **elastic_566**.
 
 
-### 1. Create an aggregation to answer question 1.
+### 1. Enable the collection of monitoring data.
 
 Use the Kibana console tool to execute the following:
 ```
-GET bank/_search
+PUT _cluster/settings
 {
-  "size": 0,
-  "aggs": {
-    "employers": {
-      "cardinality": {
-        "field": "employer.keyword"
-      }
-    }
+  "persistent": {
+    "xpack.monitoring.collection.enabled": true
   }
 }
 ```
-### 2. Create an aggregation to answer question 2.
+### 2. Explore the Monitoring data in Kibana.
 
-Use the Kibana console tool to execute the following:
-```
-GET bank/_search
-{
-  "size": 0,
-  "aggs": {
-    "state": {
-      "terms": {
-        "field": "state.keyword",
-        "size": 100
-      }
-    }
-  }
-}
-```
-you can find the Italia state previously added.
-
-
-### 3. Create an aggregation to answer question 3.
-
-Use the Kibana console tool to execute the following:
-```
-GET bank/_search
-{
-  "size": 0,
-  "aggs": {
-    "state": {
-      "terms": {
-        "field": "state.keyword",
-        "size": 50
-      },
-      "aggs": {
-        "balance": {
-          "avg": {
-            "field": "balance"
-          }
-        }
-      }
-    },
-    "max_average_balance": {
-      "max_bucket": {
-        "buckets_path": "state>balance"
-      }
-    }
-  }
-}
-```
+From Kibana, navigate to the "Stack Monitoring" application and explore the monitoring data.
