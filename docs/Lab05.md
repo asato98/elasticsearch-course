@@ -1,4 +1,4 @@
-# Lab05: Working with Logstash
+# Lab05: Working with Logstash and filebeat
 
 ### 1. Install Logstash
  
