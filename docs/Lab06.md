@@ -1,4 +1,4 @@
-# Lab07: Define Elasticsearch Indices 
+# Lab06: Define Elasticsearch Indices 
 
 
 You work as a system administrator for a 3-node Elasticsearch cluster. You are being asked to prepare the Elasticsearch cluster to ingest some log data by creating the neccessary indices. We would like to search the data by using aliases such as this_week or last_week. This makes it easy to search the data you care about since you don't have to know the specific index names. Using the console tool in Kibana, create the following indices:
