@@ -1,4 +1,4 @@
-# Lab09: Search Data in Elasticsearch
+# Lab08: Search Data in Elasticsearch
 
 
 You work as an Elasticsearch consultant and have been hired by a local university looking to implement Elasticsearch for literary research. The team you are working with is creating a UI that will enable students to perform search analysis on various works of literature. The test setup you are working with is a 3-node Elasticsearch cluster loaded with the complete works of Shakespeare. In order for the UI to display the desired search results, you must help the team come up with a few search requests that meet the following requirements:
