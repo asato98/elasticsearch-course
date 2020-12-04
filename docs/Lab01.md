@@ -183,8 +183,8 @@ Change the following lines:
 ```
 to
 ```
--Xms2g
--Xmx2g
+-Xms1200m
+-Xmx1200m
 ```
 
 ### 4. Start Elasticsearch on each node.
